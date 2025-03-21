@@ -6,7 +6,7 @@ import { messaging, VITE_FIREBASE_VALID_KEY } from './firebase-config';
 import viteLogo from '/vite.svg';
 
 function App() {
-  const [, setSupportsPWA] = useState(false);
+  const [supportsPWA, setSupportsPWA] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [promptInstall, setPromptInstall] = useState<any>();
   const [token, setToken] = useState<string>('');
@@ -101,6 +101,7 @@ function App() {
       <h1>Vite + React</h1>
       <div className="card">
         <button onClick={handleInstallPWA}>Install</button>
+        <p>Supports PWA: {supportsPWA ? 'true' : 'false'}</p>
         <p style={{ width: '200px', wordBreak: 'break-all' }}>{token}</p>
       </div>
     </>
