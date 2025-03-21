@@ -1,16 +1,16 @@
 import { getToken, onMessage } from "firebase/messaging";
-import { useLayoutEffect, useState } from "react";
+import { MouseEvent, useLayoutEffect, useState } from "react";
 import "./App.css";
 import reactLogo from "./assets/react.svg";
 import { FIREBASE_VAPID_KEY, messaging } from "./lib/firebaseConfig";
 import viteLogo from "/vite.svg";
 
 function App() {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [supportsPWA, setSupportsPWA] = useState(false);
-  const [promptInstall, setPromptInstall] = useState(null);
+  const [, setSupportsPWA] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [promptInstall, setPromptInstall] = useState<any>();
 
-  const handleInstallPWA = async (evt) => {
+  const handleInstallPWA = async (evt: MouseEvent<HTMLElement>) => {
     evt.preventDefault();
     if (!promptInstall) {
       return;
@@ -23,7 +23,8 @@ function App() {
     setPromptInstall(null);
   };
 
-  const handler = (e) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handler = (e:any) => {
     e.preventDefault();
     setSupportsPWA(true);
     setPromptInstall(e);
@@ -34,10 +35,7 @@ function App() {
         navigator.serviceWorker.register("/service-worker.js").then(
           function (registration) {
             // Registration was successful
-            console.log(
-              "ServiceWorker scope: ",
-              registration.scope
-            );
+            console.log("ServiceWorker scope: ", registration.scope);
           },
           function (err) {
             // registration failed :(
@@ -48,10 +46,7 @@ function App() {
       navigator.serviceWorker.register("/firebase-messaging-sw.js").then(
         function (registration) {
           // Registration was successful
-          console.log(
-            "firebase ServiceWorker scope: ",
-            registration.scope
-          );
+          console.log("firebase ServiceWorker scope: ", registration.scope);
         },
         function (err) {
           // registration failed :(
@@ -72,30 +67,32 @@ function App() {
   useLayoutEffect(() => {
     const requestPermission = async () => {
       try {
-          const token = await getToken(messaging, { vapidKey: FIREBASE_VAPID_KEY });
-          if (token) {
-              console.log('Token generated:', token);
-              // Send this token to your server to store it for later use
-          } else {
-              console.log('No registration token available.');
-          }
+        const token = await getToken(messaging, {
+          vapidKey: FIREBASE_VAPID_KEY,
+        });
+        if (token) {
+          console.log("Token generated:", token);
+          // Send this token to your server to store it for later use
+        } else {
+          console.log("No registration token available.");
+        }
       } catch (err) {
-          console.error('Error getting token:', err);
+        console.error("Error getting token:", err);
       }
-  };
-  requestPermission();
-  },[])
+    };
+    requestPermission();
+  }, []);
 
   useLayoutEffect(() => {
     const unsubscribe = onMessage(messaging, (payload) => {
-        console.log('Message received. ', payload);
-        // Customize notification display here
+      console.log("Message received. ", payload);
+      // Customize notification display here
     });
 
     return () => {
-        unsubscribe();
+      unsubscribe();
     };
-}, []);
+  }, []);
 
   return (
     <>
