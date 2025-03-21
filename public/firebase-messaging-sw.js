@@ -1,13 +1,12 @@
-//public/firebase-messaging-sw.js
-importScripts('https://www.gstatic.com/firebasejs/8.2.0/firebase-app.js');
-importScripts('https://www.gstatic.com/firebasejs/8.2.0/firebase-messaging.js');
+// Import Firebase libraries using importScripts (using compat versions)
+importScripts(
+  "https://www.gstatic.com/firebasejs/11.5.0/firebase-app-compat.js"
+);
+importScripts(
+  "https://www.gstatic.com/firebasejs/11.5.0/firebase-messaging-compat.js"
+);
 
-self.addEventListener('fetch', () => {
-  const urlParams = new URLSearchParams(location.search);
-  self.firebaseConfig = Object.fromEntries(urlParams);
-});
-
-const defaultConfig = {
+const firebaseConfig = {
   apiKey: "AIzaSyCq8Y2phooUn0KOfjhHH6BL6rH6bcmhXUg",
   authDomain: "pwa-noti-102c5.firebaseapp.com",
   projectId: "pwa-noti-102c5",
@@ -16,19 +15,24 @@ const defaultConfig = {
   appId: "1:96369261921:web:230c01d935ce26740a1920"
 };
 
-firebase.initializeApp(self.firebaseConfig || defaultConfig);
+// Initialize the Firebase App
+firebase.initializeApp(firebaseConfig);
 
-if (firebase.messaging.isSupported()) {
-  const messaging = firebase.messaging();
-  messaging.onBackgroundMessage(function(payload) {
-    console.log("Received background message ", payload);
- 
-    const notificationTitle = payload.notification.title;
-    const notificationOptions = {
-      body: payload.notification.body,
-    };
- 
-    self.registration.showNotification(notificationTitle, notificationOptions);
-  });
- 
-}
+// IMPORTANT: Call firebase.messaging() with no argument!
+const messaging = firebase.messaging();
+
+// (Optional) Listen for background messages.
+messaging.onBackgroundMessage((payload) => {
+  console.log(
+    "[firebase-messaging-sw.js] Received background message:",
+    payload
+  );
+
+  const notificationTitle = payload.notification.title;
+  const notificationOptions = {
+    body: payload.notification.body,
+    icon: "/vite.svg", // Update the icon path as needed
+  };
+
+  self.registration.showNotification(notificationTitle, notificationOptions);
+});
