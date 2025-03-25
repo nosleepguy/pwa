@@ -10,7 +10,8 @@ function App() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [promptInstall, setPromptInstall] = useState<any>();
   const [token, setToken] = useState<string>("");
-  const [noti, setnoti] = useState(null);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [noti, setnoti] = useState<any>(null);
 
   const handleInstallPWA = async (evt: MouseEvent<HTMLElement>) => {
     evt.preventDefault();
