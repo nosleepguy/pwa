@@ -86,7 +86,7 @@ function App() {
   onMessage(messaging, (payload) => {
     console.log("Message received. ", payload);
     alert(payload.notification?.body);
-    setnoti(JSON.stringify(payload.notification?.body))
+    setnoti(JSON.stringify(payload.notification?.body)) 
     // Customize notification display here
   });
 
