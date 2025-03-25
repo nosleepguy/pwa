@@ -3,14 +3,24 @@
   "short_name": "PWA",
   "description": "My Progressive Web App",
   "start_url": "/index.html",
+  "id": "my-pwa-id",
   "display": "standalone",
   "background_color": "#ffffff",
+  "orientation": "portrait",
   "theme_color": "#000000",
+  "standalone": "fullscreen",
   "icons": [
     {
       "src": "fox-icon.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "fox-icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
