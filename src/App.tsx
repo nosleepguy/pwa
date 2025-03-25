@@ -12,17 +12,22 @@ function App() {
   const [token, setToken] = useState<string>("");
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [noti, setnoti] = useState<any>(null);
-
+  const [isInstalled, setIsInstalled] = useState(false);
+  
   const handleInstallPWA = async (evt: MouseEvent<HTMLElement>) => {
-    evt.preventDefault();
-    if (!promptInstall) {
-      return;
+    if((window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true){
+      setIsInstalled(true)
+    }else{
+      evt.preventDefault();
+      if (!promptInstall) {
+        return;
+      }
+      promptInstall.prompt();
+      const { outcome } = await promptInstall.userChoice;
+      console.log(`User response to the install prompt: ${outcome}`);
+      // Clear the deferredPrompt variable, it can only be used once.
+      setPromptInstall(null);
     }
-    promptInstall.prompt();
-    const { outcome } = await promptInstall.userChoice;
-    console.log(`User response to the install prompt: ${outcome}`);
-    // Clear the deferredPrompt variable, it can only be used once.
-    setPromptInstall(null);
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -103,7 +108,7 @@ function App() {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={handleInstallPWA}>Install</button>
+        {!isInstalled && <button onClick={handleInstallPWA}>Install</button>}
         <p>Supports PWA: {supportsPWA ? "true" : "false"}</p>
         <p style={{ width: "200px", wordBreak: "break-all" }}>{token}</p>
         <p>Noti: {noti ? noti : null}</p>
