@@ -25,6 +25,7 @@ function App() {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handler = (e: any) => {
+    alert("run");
     e.preventDefault();
     setSupportsPWA(true);
     setPromptInstall(e);
