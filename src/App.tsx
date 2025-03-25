@@ -86,6 +86,7 @@ function App() {
   };
   onMessage(messaging, payload => {
     console.log('Message received. ', payload);
+    alert(payload.notification?.body)
     // Customize notification display here
   });
   useEffect(() => {
@@ -103,6 +104,7 @@ function App() {
         <button onClick={handleInstallPWA}>Install</button>
         <p>Supports PWA: {supportsPWA ? 'true' : 'false'}</p>
         <p style={{ width: '200px', wordBreak: 'break-all' }}>{token}</p>
+
       </div>
     </>
   );
