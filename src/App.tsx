@@ -89,8 +89,8 @@ function App() {
   });
 
   useEffect(() => {
-    if (supportsPWA) requestPermission();
-  }, [supportsPWA]);
+    requestPermission();
+  }, []);
 
   return (
     <>
