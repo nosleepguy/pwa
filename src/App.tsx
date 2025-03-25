@@ -1,15 +1,15 @@
-import { getToken, onMessage } from 'firebase/messaging';
-import { MouseEvent, useEffect, useLayoutEffect, useState } from 'react';
-import './App.css';
-import reactLogo from './assets/react.svg';
-import { messaging, VITE_FIREBASE_VALID_KEY } from './firebase-config';
-import viteLogo from '/vite.svg';
+import { getToken, onMessage } from "firebase/messaging";
+import { MouseEvent, useEffect, useLayoutEffect, useState } from "react";
+import "./App.css";
+import reactLogo from "./assets/react.svg";
+import { messaging, VITE_FIREBASE_VALID_KEY } from "./firebase-config";
+import viteLogo from "/vite.svg";
 
 function App() {
   const [supportsPWA, setSupportsPWA] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [promptInstall, setPromptInstall] = useState<any>();
-  const [token, setToken] = useState<string>('');
+  const [token, setToken] = useState<string>("");
 
   const handleInstallPWA = async (evt: MouseEvent<HTMLElement>) => {
     evt.preventDefault();
@@ -25,45 +25,44 @@ function App() {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handler = (e: any) => {
-    alert("run");
     e.preventDefault();
     setSupportsPWA(true);
     setPromptInstall(e);
   };
 
   useLayoutEffect(() => {
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js').then(
-          function (registration) {
-            // Registration was successful
-            console.log('ServiceWorker scope: ', registration.scope);
-          },
-          function (err) {
-            // registration failed :(
-            console.log('ServiceWorker registration failed: ', err);
-          },
-        );
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
         navigator.serviceWorker
-          .register('/firebase-messaging-sw.js')
-          .then(registration => {
+          .register("/service-worker.js")
+          .then((registration) => {
+            // Registration was successful
+            console.log("ServiceWorker scope: ", registration.scope);
+          })
+          .catch((err) => {
+            console.log("ServiceWorker registration failed: ", err);
+          });
+
+        navigator.serviceWorker
+          .register("/firebase-messaging-sw.js")
+          .then((registration) => {
             console.log(
-              'Registration successful, scope is:',
-              registration.scope,
+              "Registration successful, scope is:",
+              registration.scope
             );
           })
-          .catch(error => {
-            console.log('Service worker registration failed: ', error);
+          .catch((error) => {
+            console.log("Service worker registration failed: ", error);
           });
       });
     }
-    window.addEventListener('beforeinstallprompt', handler);
-    window.addEventListener('appinstalled', () => {
-      console.log('PWA was installed');
+    window.addEventListener("beforeinstallprompt", handler);
+    window.addEventListener("appinstalled", () => {
+      console.log("PWA was installed");
     });
 
-    return function cleanup() {
-      window.removeEventListener('beforeinstallprompt', handler);
+    return () => {
+      window.removeEventListener("beforeinstallprompt", handler);
     };
   }, []);
 
@@ -73,26 +72,25 @@ function App() {
         vapidKey: VITE_FIREBASE_VALID_KEY,
       });
       if (token) {
-        console.log('Token generated:', token);
+        console.log("Token generated:", token);
         setToken(token);
         // Send this token to your server to store it for later use
       } else {
-        console.log('No registration token available.');
+        console.log("No registration token available.");
       }
     } catch (err) {
-      console.error('Error getting token:', err);
-    } finally {
-      console.log('run');
+      console.error("Error getting token:", err);
     }
   };
-  onMessage(messaging, payload => {
-    console.log('Message received. ', payload);
-    alert(payload.notification?.body)
+  onMessage(messaging, (payload) => {
+    console.log("Message received. ", payload);
+    alert(payload.notification?.body);
     // Customize notification display here
   });
+
   useEffect(() => {
-    requestPermission();
-  }, []);
+    if (supportsPWA) requestPermission();
+  }, [supportsPWA]);
 
   return (
     <>
@@ -103,9 +101,8 @@ function App() {
       <h1>Vite + React</h1>
       <div className="card">
         <button onClick={handleInstallPWA}>Install</button>
-        <p>Supports PWA: {supportsPWA ? 'true' : 'false'}</p>
-        <p style={{ width: '200px', wordBreak: 'break-all' }}>{token}</p>
-
+        <p>Supports PWA: {supportsPWA ? "true" : "false"}</p>
+        <p style={{ width: "200px", wordBreak: "break-all" }}>{token}</p>
       </div>
     </>
   );
