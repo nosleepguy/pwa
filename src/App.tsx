@@ -10,6 +10,7 @@ function App() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [promptInstall, setPromptInstall] = useState<any>();
   const [token, setToken] = useState<string>("");
+  const [noti, setnoti] = useState(null);
 
   const handleInstallPWA = async (evt: MouseEvent<HTMLElement>) => {
     evt.preventDefault();
@@ -85,6 +86,7 @@ function App() {
   onMessage(messaging, (payload) => {
     console.log("Message received. ", payload);
     alert(payload.notification?.body);
+    setnoti(JSON.stringify(payload.notification?.body))
     // Customize notification display here
   });
 
@@ -103,6 +105,7 @@ function App() {
         <button onClick={handleInstallPWA}>Install</button>
         <p>Supports PWA: {supportsPWA ? "true" : "false"}</p>
         <p style={{ width: "200px", wordBreak: "break-all" }}>{token}</p>
+        <p>Noti: {noti ? noti : null}</p>
       </div>
     </>
   );
