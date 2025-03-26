@@ -66,7 +66,6 @@ function App() {
     ) {
       setIsInstall(true);
     }
-    // checkInstalled();
     window.addEventListener("beforeinstallprompt", handler);
     window.addEventListener("appinstalled", () => {
       console.log("PWA was installed");
@@ -76,6 +75,14 @@ function App() {
       window.removeEventListener("beforeinstallprompt", handler);
     };
   }, []);
+
+  // Detects if device is on iOS 
+const isIos = () => {
+  const userAgent = window.navigator.userAgent.toLowerCase();
+  return /iphone|ipad|ipod/.test( userAgent );
+}
+// Detects if device is in standalone mode
+const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
 
   const requestPermission = async () => {
     console.log("Requesting permission xxxx");
@@ -99,6 +106,13 @@ function App() {
     alert(payload.notification?.body);
     // Customize notification display here
   });
+
+  useEffect(() => {
+    if (isIos() && !isInStandaloneMode()) {
+      console.log("Displaying iOS prompt");
+      setPromptInstall(window.prompt);
+    }
+  },[]);
 
   useEffect(() => {
     if (supportsPWA || isInstall) {
