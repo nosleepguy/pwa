@@ -24,23 +24,7 @@ function App() {
     // Clear the deferredPrompt variable, it can only be used once.
     setPromptInstall(null);
   };
-  const checkInstalled = async () => {
-    try {
-      const relatedApps = await navigator.getInstalledRelatedApps?.();
-      console.log("🚀 ~ checkInstalled ~ relatedApps:", relatedApps);
-      if (relatedApps) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        relatedApps.forEach((app:any) => {
-          console.log(app.id, app.platform, app.url);
-          if (app.platform === "webapp") {
-            setIsInstall(true);
-          }
-        });
-      }
-    } catch (error) {
-      console.log("🚀 ~ checkInstalled ~ error:", error);
-    }
-  };
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handler = (e: any) => {
     e.preventDefault();
@@ -82,7 +66,7 @@ function App() {
     ) {
       setIsInstall(true);
     }
-    checkInstalled();
+    // checkInstalled();
     window.addEventListener("beforeinstallprompt", handler);
     window.addEventListener("appinstalled", () => {
       console.log("PWA was installed");
@@ -116,8 +100,10 @@ function App() {
   });
 
   useEffect(() => {
-    if (supportsPWA) requestPermission();
-  }, [supportsPWA]);
+    if (supportsPWA || isInstall) {
+      requestPermission();
+    }
+  }, [supportsPWA, isInstall]);
 
   return (
     <>
