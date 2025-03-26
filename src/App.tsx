@@ -26,14 +26,17 @@ function App() {
   };
   const checkInstalled = async () => {
     try {
-      const relatedApps = await navigator.getInstalledRelatedApps();
+      const relatedApps = await navigator.getInstalledRelatedApps?.();
       console.log("🚀 ~ checkInstalled ~ relatedApps:", relatedApps);
-      relatedApps.forEach((app) => {
-        console.log(app.id, app.platform, app.url);
-        if (app.platform === "webapp") {
-          setIsInstall(true);
-        }
-      });
+      if (relatedApps) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        relatedApps.forEach((app:any) => {
+          console.log(app.id, app.platform, app.url);
+          if (app.platform === "webapp") {
+            setIsInstall(true);
+          }
+        });
+      }
     } catch (error) {
       console.log("🚀 ~ checkInstalled ~ error:", error);
     }
@@ -74,7 +77,7 @@ function App() {
     }
     if (
       window.matchMedia("(display-mode: standalone)").matches ||
-      window.navigator.standalone ||
+      window.navigator?.standalone ||
       document.referrer.includes("android-app://")
     ) {
       setIsInstall(true);
