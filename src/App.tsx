@@ -111,6 +111,7 @@ const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.n
     if (isIos() && !isInStandaloneMode()) {
       console.log("Displaying iOS prompt");
       setPromptInstall(window.prompt);
+      requestPermission();
     }
   },[]);
 
