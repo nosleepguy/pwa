@@ -99,6 +99,7 @@ const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.n
       }
     } catch (err) {
       console.error("Error getting token:", err);
+      alert(err);
     }
   };
   onMessage(messaging, (payload) => {
