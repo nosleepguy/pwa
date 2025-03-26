@@ -10,30 +10,39 @@ function App() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [promptInstall, setPromptInstall] = useState<any>();
   const [token, setToken] = useState<string>("");
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [noti, setnoti] = useState<any>(null);
-  const [isInstalled, setIsInstalled] = useState(false);
-  
+  const [isInstall, setIsInstall] = useState(false);
+  console.log("🚀 ~ App ~ isInstall:", isInstall);
+
   const handleInstallPWA = async (evt: MouseEvent<HTMLElement>) => {
-    if((window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true){
-      setIsInstalled(true)
-    }else{
-      evt.preventDefault();
-      if (!promptInstall) {
-        return;
-      }
-      promptInstall.prompt();
-      const { outcome } = await promptInstall.userChoice;
-      console.log(`User response to the install prompt: ${outcome}`);
-      // Clear the deferredPrompt variable, it can only be used once.
-      setPromptInstall(null);
+    evt.preventDefault();
+    if (!promptInstall) {
+      return;
+    }
+    promptInstall.prompt();
+    const { outcome } = await promptInstall.userChoice;
+    console.log(`User response to the install prompt: ${outcome}`);
+    // Clear the deferredPrompt variable, it can only be used once.
+    setPromptInstall(null);
+  };
+  const checkInstalled = async () => {
+    try {
+      const relatedApps = await navigator.getInstalledRelatedApps();
+      console.log("🚀 ~ checkInstalled ~ relatedApps:", relatedApps);
+      relatedApps.forEach((app) => {
+        console.log(app.id, app.platform, app.url);
+        if (app.platform === "webapp") {
+          setIsInstall(true);
+        }
+      });
+    } catch (error) {
+      console.log("🚀 ~ checkInstalled ~ error:", error);
     }
   };
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handler = (e: any) => {
     e.preventDefault();
     setSupportsPWA(true);
+    // See if the app is already installed, in that case, do nothing
     setPromptInstall(e);
   };
 
@@ -63,11 +72,19 @@ function App() {
           });
       });
     }
+    if (
+      window.matchMedia("(display-mode: standalone)").matches ||
+      window.navigator.standalone ||
+      document.referrer.includes("android-app://")
+    ) {
+      setIsInstall(true);
+    }
+    checkInstalled();
     window.addEventListener("beforeinstallprompt", handler);
     window.addEventListener("appinstalled", () => {
       console.log("PWA was installed");
+      setIsInstall(true);
     });
-
     return () => {
       window.removeEventListener("beforeinstallprompt", handler);
     };
@@ -92,13 +109,12 @@ function App() {
   onMessage(messaging, (payload) => {
     console.log("Message received. ", payload);
     alert(payload.notification?.body);
-    setnoti(JSON.stringify(payload.notification?.body)) 
     // Customize notification display here
   });
 
   useEffect(() => {
-    requestPermission();
-  }, []);
+    if (supportsPWA) requestPermission();
+  }, [supportsPWA]);
 
   return (
     <>
@@ -108,10 +124,11 @@ function App() {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        {!isInstalled && <button onClick={handleInstallPWA}>Install</button>}
-        <p>Supports PWA: {supportsPWA ? "true" : "false"}</p>
+        {!isInstall && <button onClick={handleInstallPWA}>Install</button>}
+        <p>
+          Supports PWA: {isInstall ? "true" : supportsPWA ? "true" : "false"}
+        </p>
         <p style={{ width: "200px", wordBreak: "break-all" }}>{token}</p>
-        <p>Noti: {noti ? noti : null}</p>
       </div>
     </>
   );

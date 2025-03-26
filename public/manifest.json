@@ -2,14 +2,18 @@
   "name": "My PWA",
   "short_name": "PWA",
   "description": "My Progressive Web App",
-  "start_url": "/index.html",
+  "start_url": "/?mode=standalone",
   "id": "my-pwa-id",
   "background_color": "#ffffff",
   "orientation": "portrait",
   "theme_color": "#000000",
-  "standalone": "fullscreen",
-  "display_override": ["fullscreen", "minimal-ui"],
   "display": "standalone",
+  "related_applications": [
+    {
+      "platform": "webapp",
+      "url": "https://pwa-noti.vercel.app/manifest.json"
+    }
+  ],
   "icons": [
     {
       "src": "fox-icon.png",
