@@ -78,6 +78,7 @@ function App() {
   }, []);
 
   const requestPermission = async () => {
+    console.log("Requesting permission xxxx");
     try {
       const token = await getToken(messaging, {
         vapidKey: VITE_FIREBASE_VALID_KEY,
@@ -101,6 +102,7 @@ function App() {
 
   useEffect(() => {
     if (supportsPWA || isInstall) {
+      console.log("Requesting permission");
       requestPermission();
     }
   }, [supportsPWA, isInstall]);
