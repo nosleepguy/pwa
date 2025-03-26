@@ -108,12 +108,12 @@ const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.n
   });
 
   useEffect(() => {
-    if (isIos() && !isInStandaloneMode()) {
-      console.log("Displaying iOS prompt");
-      setPromptInstall(window.prompt);
-      requestPermission();
-    }
-  },[]);
+   // if ios, get token
+   alert(`${isIos()} ${isInStandaloneMode()}`)
+   if (isIos() && !isInStandaloneMode()) {
+    requestPermission();
+   }
+  },[isInstall]);
 
   useEffect(() => {
     if (supportsPWA || isInstall) {
