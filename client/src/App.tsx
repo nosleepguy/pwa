@@ -17,7 +17,7 @@ const PUBLIC_KEY =
   "BMaZoBwZ9hKINlyxR3pMvgkykXoMAfaoLEiGHa2GXpcWS5Q2Ib0dBtMUzcevNB8lAa2LpqJS7N5Esl0aSN_bXnQ";
 
 function App() {
-  const [supportsPWA, setSupportsPWA] = useState(false);
+  const [supportsPWA] = useState(false);
   const [isInstall, setIsInstall] = useState(false);
   const [pushId, setPushId] = useState<string>("");
 
@@ -77,7 +77,6 @@ function App() {
     // setPromptInstall(null);
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   // const handler = (e: any) => {
   //   e.preventDefault();
   //   setSupportsPWA(true);
