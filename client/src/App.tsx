@@ -29,13 +29,12 @@ function App() {
         const subscription = await getSubscription();
 
         await axios({
-          url: "/subscribe",
+          url: "api/subscribe",
           method: "post",
           data: {
             subscription: subscription,
             id,
           },
-          baseURL: "http://localhost:3000",
           headers: {
             "Content-Type": "application/json;charset=utf-8",
           },
@@ -53,15 +52,12 @@ function App() {
     evt.preventDefault();
     try {
       await axios.post(
-        "/send",
+        "api/send",
         {
           message: "ccccc",
           title: "vvvvvv",
           id: pushId,
         },
-        {
-          baseURL: "http://localhost:3000",
-        }
       );
       toast.success("Push success");
     } catch (e) {
