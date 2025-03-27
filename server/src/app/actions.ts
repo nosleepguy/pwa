@@ -4,9 +4,16 @@ import webpush from 'web-push';
 
 webpush.setVapidDetails(
   'mailto:example@yourdomain.org',
-  process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
-  process.env.VAPID_PRIVATE_KEY,
+  process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
+  process.env.VAPID_PRIVATE_KEY!,
 );
+interface PushSubscription {
+  endpoint: string;
+  keys: {
+    auth: string;
+    p256dh: string;
+  };
+}
 
 let subscription: PushSubscription | null = null;
 
