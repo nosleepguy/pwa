@@ -78,13 +78,13 @@ function App() {
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handler = (e: any) => {
-    e.preventDefault();
-    setSupportsPWA(true);
+  // const handler = (e: any) => {
+  //   e.preventDefault();
+  //   setSupportsPWA(true);
 
-    // See if the app is already installed, in that case, do nothing
-    // setPromptInstall(e);
-  };
+  //   // See if the app is already installed, in that case, do nothing
+  //   // setPromptInstall(e);
+  // };
 
   useLayoutEffect(() => {
     if ("serviceWorker" in navigator) {
