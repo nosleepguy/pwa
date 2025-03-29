@@ -1,15 +1,3 @@
 {
-  "subscriptions": [
-    {
-      "subscription": {
-        "endpoint": "https://wns2-pn1p.notify.windows.com/w/?token=BQYAAABmBzLnj4SMD%2bj%2btfZYUxsCBMl71IPHQJqbcbolbSjmyv6d2mgpaSvhhb%2fZWzIUg%2b1HwgHgrUclM0h%2fyAMEOAPA%2fqrijegUNOQbEJaKs%2ffuWZwXpdgn8KEDcRbbzmkA3TK8AemkyCEwHgfS9HwgM3rKNhWdV92h3YPbOS77t41nXIsuUpCmG0b4KRFjEqcW2nlslE%2fdvrAjqwk01Meu72OcTWcfJR3z4VgaIbvNgfWqfN5BTrPwuI65wN88o3hDUWkfuWMdhwZFltOyxR2sSEDoHgE9LTC5P5dH8ajw6W%2fnrEWVePh8O8KjhK59V3Aqd9A%3d",
-        "expirationTime": null,
-        "keys": {
-          "p256dh": "BMfgDAzEXzIwNXZtxCoq_S0irrhJgByyEau_IPoNIWYtjLVAqxo8gOzJ_eRA9Uslq6NN7OB8J_cY7yszR3lmeyM",
-          "auth": "Ka26qe4dQPbpk7S3OzGK7w"
-        }
-      },
-      "deviceID": "c73095531c58391acb18d838a3443b92"
-    }
-  ]
+  "subscriptions": []
 }

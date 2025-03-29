@@ -23,19 +23,40 @@ export async function subscribeUser(
   subscription: PushSubscription,
   deviceID: string,
 ) {
-  await db.update(({ subscriptions }) =>
-    subscriptions.push({ subscription, deviceID: deviceID }),
+  // check if user is already subscribed
+  const existingSubscription = db.data.subscriptions.find(
+    s => s.deviceID === deviceID,
   );
+  if (existingSubscription) {
+    // update subscription
+    await db.update(({ subscriptions }) =>
+      subscriptions.map(s =>
+        s.deviceID === deviceID ? { ...s, subscription } : s,
+      ),
+    );
+    return { success: true };
+  } else {
+    await db.update(({ subscriptions }) =>
+      subscriptions.push({ subscription, deviceID: deviceID }),
+    );
+  }
   return { success: true };
 }
 
 export async function unsubscribeUser(deviceID: string) {
-  // In a production environment, you would want to remove the subscription from the database
-  // For example: await db.subscriptions.delete({ where: { ... } })
-  // delete from db
-  await db.update(({ subscriptions }) =>
-    subscriptions.filter(s => s.deviceID !== deviceID),
+  // check if user is already subscribed or not
+  const existingSubscription = db.data.subscriptions.find(
+    s => s.deviceID === deviceID,
   );
+  if (!existingSubscription) {
+    return { success: false, error: 'User is not subscribed' };
+  } else {
+    // delete from db
+    db.data.subscriptions = db.data.subscriptions.filter(
+      s => s.deviceID !== deviceID,
+    );
+    await db.write();
+  }
   return { success: true };
 }
 
