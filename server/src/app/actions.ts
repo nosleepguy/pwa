@@ -48,7 +48,7 @@ export async function sendNotification(message: string, deviceID: string) {
       subscription => subscription.deviceID === deviceID,
     );
     await webpush.sendNotification(
-      subscription?.subscription,
+      subscription?.subscription as PushSubscription,
       JSON.stringify({
         title: 'Test Notification',
         body: message,
