@@ -1,5 +1,6 @@
 'use client';
 
+import FingerprintJS from "@fingerprintjs/fingerprintjs";
 import { useEffect, useState } from 'react';
 import { sendNotification, subscribeUser, unsubscribeUser } from './actions';
 
@@ -21,11 +22,23 @@ function PushNotificationManager() {
     null,
   );
   const [message, setMessage] = useState('');
+  const [deviceID, setDeviceID] = useState('');
 
   useEffect(() => {
     if ('serviceWorker' in navigator && 'PushManager' in window) {
       setIsSupported(true);
       registerServiceWorker();
+    }
+  }, []);
+  useEffect(() => {
+    try {
+      FingerprintJS.load()
+        .then((fp) => fp.get())
+        .then((result) => {
+          setDeviceID(result.visitorId);
+        });
+    } catch (error) {
+      alert(error);
     }
   }, []);
 
@@ -48,18 +61,18 @@ function PushNotificationManager() {
     });
     setSubscription(sub);
     const serializedSub = JSON.parse(JSON.stringify(sub));
-    await subscribeUser(serializedSub);
+    await subscribeUser(serializedSub, deviceID);
   }
 
   async function unsubscribeFromPush() {
     await subscription?.unsubscribe();
     setSubscription(null);
-    await unsubscribeUser();
+    await unsubscribeUser(deviceID);
   }
 
   async function sendTestNotification() {
     if (subscription) {
-      await sendNotification(message);
+      await sendNotification(message, deviceID);
       setMessage('');
     }
   }

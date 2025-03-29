@@ -1,6 +1,13 @@
 'use server';
 
+// import { dbTemplate } from '@/constant';
+import { JSONFilePreset } from 'lowdb/node';
 import webpush from 'web-push';
+
+const dbTemplate: {
+  subscriptions: { subscription: PushSubscription; deviceID: string }[];
+} = { subscriptions: [] };
+const db = await JSONFilePreset('db.json', dbTemplate);
 
 webpush.setVapidDetails(
   'mailto:example@yourdomain.org',
@@ -15,30 +22,33 @@ interface PushSubscription {
   };
 }
 
-let subscription: PushSubscription | null = null;
-
-export async function subscribeUser(sub: PushSubscription) {
-  subscription = sub;
-  // In a production environment, you would want to store the subscription in a database
-  // For example: await db.subscriptions.create({ data: sub })
+export async function subscribeUser(
+  subscription: PushSubscription,
+  deviceID: string,
+) {
+  await db.update(({ subscriptions }) =>
+    subscriptions.push({ subscription, deviceID: deviceID }),
+  );
   return { success: true };
 }
 
-export async function unsubscribeUser() {
-  subscription = null;
+export async function unsubscribeUser(deviceID: string) {
   // In a production environment, you would want to remove the subscription from the database
   // For example: await db.subscriptions.delete({ where: { ... } })
+  // delete from db
+  await db.update(({ subscriptions }) =>
+    subscriptions.filter(s => s.deviceID !== deviceID),
+  );
   return { success: true };
 }
 
-export async function sendNotification(message: string) {
-  if (!subscription) {
-    throw new Error('No subscription available');
-  }
-
+export async function sendNotification(message: string, deviceID: string) {
   try {
+    const subscription = db.data.subscriptions.find(
+      subscription => subscription.deviceID === deviceID,
+    );
     await webpush.sendNotification(
-      subscription,
+      subscription?.subscription,
       JSON.stringify({
         title: 'Test Notification',
         body: message,
