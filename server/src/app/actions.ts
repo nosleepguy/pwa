@@ -1,12 +1,9 @@
 'use server';
 
-// import { dbTemplate } from '@/constant';
+import { dbTemplate } from '@/constant';
 import { JSONFilePreset } from 'lowdb/node';
 import webpush from 'web-push';
 
-const dbTemplate: {
-  subscriptions: { subscription: PushSubscription; deviceID: string }[];
-} = { subscriptions: [] };
 const db = await JSONFilePreset('db.json', dbTemplate);
 
 webpush.setVapidDetails(
@@ -14,7 +11,7 @@ webpush.setVapidDetails(
   process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
   process.env.VAPID_PRIVATE_KEY!,
 );
-interface PushSubscription {
+export interface PushSubscription {
   endpoint: string;
   keys: {
     auth: string;

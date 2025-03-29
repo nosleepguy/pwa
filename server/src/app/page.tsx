@@ -1,8 +1,9 @@
 'use client';
 
-import FingerprintJS from "@fingerprintjs/fingerprintjs";
+import FingerprintJS from '@fingerprintjs/fingerprintjs';
 import { useEffect, useState } from 'react';
 import { sendNotification, subscribeUser, unsubscribeUser } from './actions';
+import './index.css';
 
 function urlBase64ToUint8Array(base64String: string) {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
@@ -33,8 +34,8 @@ function PushNotificationManager() {
   useEffect(() => {
     try {
       FingerprintJS.load()
-        .then((fp) => fp.get())
-        .then((result) => {
+        .then(fp => fp.get())
+        .then(result => {
           setDeviceID(result.visitorId);
         });
     } catch (error) {
