@@ -13,7 +13,6 @@ export async function GET(req: NextRequest) {
     });
 
     const dataInDB = dbData.read();
-    console.log('🚀 ~ GET ~ dataInDB:', dataInDB);
     if (!dataInDB) {
       return NextResponse.json({ subscriptions: [] }, { status: 200 });
     } else
