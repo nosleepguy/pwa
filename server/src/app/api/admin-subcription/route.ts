@@ -1,3 +1,4 @@
+import { dbFileLink } from '@/constant';
 import { DataFileSync } from 'lowdb/node';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -6,7 +7,7 @@ export async function GET(req: NextRequest) {
   try {
     const dbData: DataFileSync<{
       subscriptions: { subscription: PushSubscription; deviceID: string }[];
-    }> = new DataFileSync('/public/db.json', {
+    }> = new DataFileSync(dbFileLink, {
       parse: data => JSON.parse(data),
       stringify: data => JSON.stringify(data),
     });

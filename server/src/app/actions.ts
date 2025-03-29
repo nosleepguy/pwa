@@ -1,10 +1,10 @@
 'use server';
 
-import { dbTemplate } from '@/constant';
+import { dbFileLink, dbTemplate } from '@/constant';
 import { JSONFilePreset } from 'lowdb/node';
 import webpush from 'web-push';
 
-const db = await JSONFilePreset('/public/db.json', dbTemplate);
+const db = await JSONFilePreset(dbFileLink, dbTemplate);
 
 webpush.setVapidDetails(
   'mailto:example@yourdomain.org',
