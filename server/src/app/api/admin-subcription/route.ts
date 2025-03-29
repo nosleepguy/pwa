@@ -5,7 +5,7 @@ export async function GET(req: NextRequest) {
   // Handle GET request
   const dbData: DataFileSync<{
     subscriptions: { subscription: PushSubscription; deviceID: string }[];
-  }> = new DataFileSync('db.json', {
+  }> = new DataFileSync('/public/db.json', {
     parse: data => JSON.parse(data),
     stringify: data => JSON.stringify(data),
   });

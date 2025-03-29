@@ -4,7 +4,7 @@ import { dbTemplate } from '@/constant';
 import { JSONFilePreset } from 'lowdb/node';
 import webpush from 'web-push';
 
-const db = await JSONFilePreset('db.json', dbTemplate);
+const db = await JSONFilePreset('/public/db.json', dbTemplate);
 
 webpush.setVapidDetails(
   'mailto:example@yourdomain.org',

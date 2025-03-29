@@ -23,6 +23,7 @@ export default function AdminPush() {
     try {
       const response = await fetch('/api/admin-subcription');
       const data = await response.json();
+      console.log("🚀 ~ fetchSubscriptions ~ data:", data)
       setSubscriptions(data.subscriptions);
     } catch (error) {
       console.error('Error fetching subscriptions:', error);
